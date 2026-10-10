@@ -22,8 +22,10 @@ BUILD=$(/usr/libexec/PlistBuddy -c 'Print :CFBundleVersion' "$APP/Contents/Info.
 PKG_VERSION="$VERSION.$BUILD"
 NAME="FinderOpenWith-$VERSION-universal.pkg"
 codesign --verify --deep --strict --verbose=2 "$APP"
-lipo "$APP/Contents/MacOS/Finder Open With" -verify_arch arm64 x86_64
-lipo "$APP/Contents/PlugIns/FinderOpenWithFinderExtension.appex/Contents/MacOS/FinderOpenWithFinderExtension" -verify_arch arm64 x86_64
+for ARCH in arm64 x86_64; do
+    lipo "$APP/Contents/MacOS/Finder Open With" -verify_arch "$ARCH"
+    lipo "$APP/Contents/PlugIns/FinderOpenWithFinderExtension.appex/Contents/MacOS/FinderOpenWithFinderExtension" -verify_arch "$ARCH"
+done
 
 mkdir -p "$WORK/root/Applications"
 ditto "$APP" "$WORK/root/Applications/Finder Open With.app"

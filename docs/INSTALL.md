@@ -10,7 +10,7 @@
 
 1. [GitHub Releases](https://github.com/MZ-Gen-Labs/FinderOpenWith/releases/latest)から`FinderOpenWith-1.0-universal.pkg`をダウンロードします。
 2. `.pkg`を開き、インストーラーの案内に従います。`/Applications/Finder Open With.app`に配置され、既存の同名アプリがあれば更新されます。
-3. 「アプリケーション」から「Finder Open With」を一度起動します。
+3. 「アプリケーション」から「Finder Open With」を一度起動します。Dockアイコンもウインドウも出ませんが、正常です。
 4. システム設定でFinder機能拡張を有効にします。最近のmacOSでは「一般」→「ログイン項目と機能拡張」→「Finder」にあります。macOS 13などでは設定内で「機能拡張」を検索してください。
 5. Finderで通常のフォルダーを右クリックし、「VS Codeで開く」を選びます。VS Code側でフォルダーを開く確認が出たら、対象パスを確認して許可します。
 
@@ -24,6 +24,10 @@
 
 Apple公式の説明：[Macでアプリを安全に開く](https://support.apple.com/ja-jp/102445)。
 
+## キーボードショートカット
+
+「システム設定」→「キーボード」→「キーボードショートカット」→「サービス」で「Finder Open WithでVS Codeを開く」を有効にし、任意のキーを割り当てます。Finderでフォルダーを選び、そのキーを押してください。
+
 ## ダウンロードの検証
 
 同じReleaseの`SHA256SUMS.txt`と`INSTALL.md`も`.pkg`と同じフォルダーに保存し、ターミナルでそのフォルダーに移動して実行します。
@@ -34,4 +38,4 @@ shasum -a 256 -c SHA256SUMS.txt
 
 ## アンインストール
 
-Finder機能拡張を無効にし、アプリを終了してから「アプリケーション」の「Finder Open With.app」をゴミ箱へ移動してください。必要に応じてFinderを再起動してください。
+Finder機能拡張と割り当てたサービスのキーを無効にし、アプリを終了してから「アプリケーション」の「Finder Open With.app」をゴミ箱へ移動してください。必要に応じてFinderを再起動してください。

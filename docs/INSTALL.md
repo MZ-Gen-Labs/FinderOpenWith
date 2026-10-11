@@ -8,7 +8,7 @@
 
 ## インストール
 
-1. [GitHub Releases](https://github.com/MZ-Gen-Labs/FinderOpenWith/releases/latest)から`FinderOpenWith-1.0-universal.pkg`をダウンロードします。
+1. [GitHub Releases](https://github.com/MZ-Gen-Labs/FinderOpenWith/releases/latest)から`FinderOpenWith-1.0.1-universal.pkg`をダウンロードします。
 2. `.pkg`を開き、インストーラーの案内に従います。`/Applications/Finder Open With.app`に配置され、既存の同名アプリがあれば更新されます。
 3. 「アプリケーション」から「Finder Open With」を一度起動します。Dockアイコンもウインドウも出ませんが、正常です。
 4. システム設定でFinder機能拡張を有効にします。最近のmacOSでは「一般」→「ログイン項目と機能拡張」→「Finder」にあります。macOS 13などでは設定内で「機能拡張」を検索してください。

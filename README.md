@@ -16,6 +16,17 @@ Finderの右クリックメニューに「アプリで開く」を追加する m
 
 `dist/`にインストーラー、説明書、SHA-256チェックサムを生成します。ビルド済みアプリやインストーラーはGit管理対象から除外しています。
 
+### リリースの自動ビルド
+
+`v`で始まるタグをpushすると、GitHub Actions（`.github/workflows/release.yml`）が同じスクリプトでインストーラーを作成し、そのタグのReleaseに添付します。Releaseがなければ自動で作成します。
+
+```sh
+git tag v1.1.0
+git push origin v1.1.0
+```
+
+リリース前に`MARKETING_VERSION`（`FinderOpenWith.xcodeproj`）を更新してください。ファイル名は`FinderOpenWith-<MARKETING_VERSION>-universal.pkg`になります。ActionsタブからWorkflowを手動実行すると、Releaseを作らずにビルドだけを行い、成果物をartifactとして保存します。署名と公証は行いません。
+
 ## ビルド
 
 Xcode で `FinderOpenWith.xcodeproj` を開き、`FinderOpenWith` スキームをビルドします。コマンドラインでは次を実行します。

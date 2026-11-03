@@ -1,41 +1,41 @@
-# 別のMacへのインストール
+# Finder Open With 1.0.2 — 別Macへのインストール
 
-## 動作条件
+macOS 13以降、Apple Silicon・Intel両対応のUniversal版。アプリはad-hoc署名、PKGは未署名・未公証の個人利用向け配布物です。初回の警告は個別に許可します。
 
-- macOS 13 Ventura以降。Apple Silicon・Intelの両方に対応。
-- 通常版の[Visual Studio Code](https://code.visualstudio.com/)がインストール済み。
-- インストール時に管理者の認証が必要。
+## 1. ダウンロードと検証
 
-## インストール
-
-1. [GitHub Releases](https://github.com/MZ-Gen-Labs/FinderOpenWith/releases/latest)から`FinderOpenWith-1.0.1-universal.pkg`をダウンロードします。
-2. `.pkg`を開き、インストーラーの案内に従います。`/Applications/Finder Open With.app`に配置され、既存の同名アプリがあれば更新されます。
-3. 「アプリケーション」から「Finder Open With」を一度起動します。Dockアイコンもウインドウも出ませんが、正常です。
-4. システム設定でFinder機能拡張を有効にします。最近のmacOSでは「一般」→「ログイン項目と機能拡張」→「Finder」にあります。macOS 13などでは設定内で「機能拡張」を検索してください。
-5. Finderで通常のフォルダーを右クリックし、「VS Codeで開く」を選びます。VS Code側でフォルダーを開く確認が出たら、対象パスを確認して許可します。
-
-メニューが出ない場合はFinderを再起動するか、ログアウトして再ログインしてください。対象はユーザーホームと`/Volumes`配下です。ファイルや`.app`などのパッケージは対象外です。
-
-## 開発元確認の警告が出た場合
-
-このパッケージは個人利用向けです。アプリはアドホック署名で、インストーラーにDeveloper ID署名はなく、Apple公証も行っていません。ダウンロードしたインストーラーやアプリの起動時に、macOSが開発元の確認で止める場合があります。
-
-自分のリポジトリから入手したファイルであることを確認したうえで、一度開こうとした後に「システム設定」→「プライバシーとセキュリティ」の「このまま開く」でそのファイルを個別に許可してください。インストーラーとアプリでそれぞれ許可が必要になる場合があります。組織管理のMacなどで許可できない場合は、管理者に確認してください。
-
-Apple公式の説明：[Macでアプリを安全に開く](https://support.apple.com/ja-jp/102445)。
-
-## キーボードショートカット
-
-「システム設定」→「キーボード」→「キーボードショートカット」→「サービス」で「Finder Open WithでVS Codeを開く」を有効にし、任意のキーを割り当てます。Finderでフォルダーを選び、そのキーを押してください。
-
-## ダウンロードの検証
-
-同じReleaseの`SHA256SUMS.txt`と`INSTALL.md`も`.pkg`と同じフォルダーに保存し、ターミナルでそのフォルダーに移動して実行します。
+[Release v1.0.2-personal.1](https://github.com/MZ-Gen-Labs/FinderOpenWith/releases/tag/v1.0.2-personal.1) のAssetsから、`FinderOpenWith-1.0.2-universal.pkg`、`SHA256SUMS.txt`、`INSTALL.md`、`build-info.json` を同じフォルダへ保存します。Source codeのZIPは選びません。
 
 ```sh
+cd ~/Downloads
 shasum -a 256 -c SHA256SUMS.txt
 ```
 
-## アンインストール
+すべてOKなら進みます。FAILEDの場合は指定Releaseから取り直します。
 
-Finder機能拡張と割り当てたサービスのキーを無効にし、アプリを終了してから「アプリケーション」の「Finder Open With.app」をゴミ箱へ移動してください。必要に応じてFinderを再起動してください。
+## 2. インストール
+
+1. VS Code、Obsidian、Folio Editorのうち使うアプリを別途導入します。すべてを入れる必要はありません。
+2. 既存のFinder Open Withがあれば終了し、appをバックアップします。`~/Applications`と`/Applications`の両方に旧コピーが残らないようにします。
+3. PKGを開き、案内に従います。管理者認証が必要です。`/Applications/Finder Open With.app`に配置します。
+4. Finderの「アプリケーション」から一度起動します。Dockアイコンやウィンドウが出ないのは正常です。
+
+開発元確認でブロックされたら、配布元とチェックサムを確認して、開こうとした後に「システム設定 → プライバシーとセキュリティ → このまま開く」で個別許可します。PKGとアプリでそれぞれ必要になる場合があります。OS全体のGatekeeper無効化は不要です。
+
+## 3. サービスを設定する
+
+この版はmacOSサービス方式です。Finder機能拡張を有効にする旧版の操作は不要です。
+
+1. 「システム設定 → キーボード → キーボードショートカット → サービス」を開きます。
+2. 「VS Codeで開く」「Obsidianで開く」「Folio Editorで開く」のうち使う項目を有効にします。必要ならキーを割り当てます。
+3. Finderで通常のフォルダを選び、右クリックまたは「サービス」から目的の項目を選びます。サブメニューへまとまる場合があります。
+
+項目が出ない場合はログアウト・再ログイン後に再確認します。
+
+Obsidianの対象は`.obsidian`のある登録済みVaultです。事前にObsidianへ登録してください。Folio Editorはフォルダを開くURL連携を使います。開くアプリ側の確認画面が出たら対象パスを確認します。ファイルや.appパッケージは対象外です。
+
+## 4. 完了確認
+
+テスト用フォルダで目的のアプリがそのフォルダを開くことを確認します。別Macの右クリックメニュー・アプリ連携は導入先で最終確認してください。
+
+開発元ではUniversalビルド、署名検証、PKGから取り出したappの署名・CPU検証を行います。マシン全体へのインストール・Finder再起動・利用中のサービス変更は検証に含めません。

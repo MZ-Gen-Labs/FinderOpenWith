@@ -100,3 +100,96 @@ VS Codeが外部アプリからのフォルダー起動を確認するダイア�
 - 右クリックメニュー直下の従来の「VS Codeで開く」も表示されることを確認。
 - 複数フォルダー、日本語・空白・記号を含むパス、URL形式と従来のファイル名リスト形式、空選択・ファイル混在・アプリパッケージの拒否を検証。
 - キーボードからの呼び出しはキー割り当て後に別途確認。
+
+## Obsidianで開く
+
+フォルダーの右クリックメニューに「Obsidianで開く」を追加しています。
+対象フォルダー直下に`.obsidian`ディレクトリがあり、Obsidianの登録情報に同じフォルダーがある場合だけ、Vault IDを指定して開きます。
+シンボリックリンクは実体のパスで照合し、同名の別Vaultと区別します。
+
+Vaultでないフォルダー、未登録のVault、登録情報を確認できない場合はアラートを表示します。
+複数選択時はすべてを検証してから開くため、対象外が一つでもあれば何も開きません。
+`.obsidian`以外の設定フォルダー名を使うVaultは今回の対象外です。
+
+Finder拡張から専用URLでアプリ本体へ依頼し、本体が`~/Library/Application Support/obsidian/obsidian.json`を読み取ります。
+Obsidianの登録情報の変更、Vaultの作成、自動登録、再起動は行いません。
+登録情報はObsidianの内部形式のため、将来の形式変更時には対応が必要になる可能性があります。
+
+### Obsidian追加後の実機確認（2026-10-21、ビルド8）
+
+- Releaseビルドとアプリ全体の署名検証：成功。
+- `~/Applications/Finder Open With.app`を更新し、Finder拡張の再登録とFinderの再起動を実施。
+- Finderの右クリック直下に「VS Codeで開く」と「Obsidianで開く」が表示されることを確認。
+- 通常フォルダーでは「Vaultではありません」のアラートを確認。
+- `.obsidian`のある未登録の検証用フォルダーでは「Obsidianに登録されていません」のアラートを確認。
+- 登録済みの`dev`フォルダーから実行し、Obsidian 1.14.4の`dev` Vaultウインドウが前面に表示されることを確認。
+- 今回は既に開いているVaultへの切り替えを確認。Obsidian終了状態からの起動と複数選択の実操作は未検証（判定処理のテストは実施済み）。
+
+## Google Driveなどのクラウドフォルダー
+
+Finder Sync拡張の項目が表示されない場所でも使えるよう、macOSサービスとして
+「Finder Open WithでObsidianを開く」を提供します。既存の「Finder Open WithでVS Codeを開く」と同じ経路です。
+Finderでフォルダーを右クリックし、下部の該当項目（macOSの表示条件によっては「サービス」内）を選択してください。
+キーボードショートカットもシステム設定の「サービス」から割り当てられます。
+Vaultの条件とアラートはFinder拡張と共通です。クラウドの未取得ファイルを一括ダウンロードする処理は行いません。
+
+通常フォルダーには、Finder拡張の「VS Codeで開く」「Obsidianで開く」に加えてサービスの項目も表示される場合があります。
+クイックアクション内の「VS Codeで開く」は本アプリのサービスとは別です。
+
+### Google Driveでの実機確認（2026-10-21、ビルド9）
+
+- Releaseビルド・署名検証成功。既存アプリを更新し、Finderを再起動。
+- Google Driveの`obsidian/knowledge`を右クリックすると、Finder Syncの短い項目は表示されず、macOSの「サービス」内に「Finder Open WithでObsidianを開く」「Finder Open WithでVS Codeを開く」が表示されることを確認。
+- Obsidian用サービスを実行し、Obsidian 1.14.4の`knowledge` Vaultが前面に表示されることを確認。
+- 今回のGoogle Driveの表示経路に対応するためサービスを追加。Finder Sync側の項目が表示されないOS内部の原因までは特定していない。
+- Google DriveでのVS Code起動、オンライン専用フォルダー、他のクラウドサービスは今回の実操作検証対象外。
+
+### サービスを右クリック直下に表示する設定
+
+このMacではFinderだけに次の設定を適用し、Google Driveの`knowledge`でObsidian・VS Code両サービスが直下に表示されることを実機確認しました（2026-10-21）。
+
+```sh
+defaults write com.apple.finder NSServicesMinimumItemCountForContextSubmenu -int 99
+killall Finder
+```
+
+Finderがサービスをサブメニューにまとめる件数を増やす設定です。本アプリ以外のサービスにも適用されます。アプリのインストール処理では自動変更しません。macOSの非公開設定なので将来も同じ挙動を保証するものではありません。
+元の設定が存在しない状態から変更した場合、次で標準動作に戻せます。
+
+```sh
+defaults delete com.apple.finder NSServicesMinimumItemCountForContextSubmenu
+killall Finder
+```
+
+## 現在のメニュー構成（ビルド10以降）
+
+通常フォルダー・Google DriveともにmacOSサービスへ統一しました。
+サービスの表示名は「VS Codeで開く」「Obsidianで開く」です。
+Finder Sync拡張からの重複項目は表示しません。上記のビルド9以前の確認記録は当時の仕様です。
+ショートカットの設定先もこの短い名前になります。既存キー割り当ては更新後に確認してください。
+本アプリ以外のクイックアクションは変更しません。
+直下表示は上記Finder設定を使用します。別のMacではサービスが畳まれる場合があります。
+
+### サービス統一後の実機確認（2026-10-21、ビルド10）
+
+- Releaseビルド・署名検証成功。既存アプリを更新。
+- サービスキャッシュを更新し、旧名が短い表示名へ変わったことを確認。
+- 通常フォルダー`dev`、Google Driveの`knowledge`とも右クリック直下に「Obsidianで開く」「VS Codeで開く」が各1項目。Finder拡張による重複項目なし。
+- Google Driveで「Obsidianで開く」を実行し、`knowledge` Vaultのウインドウを確認。
+- 既存のクイックアクション内のVS Code項目は変更していない。
+
+詳細な設定の位置付け・影響範囲・復旧手順は[Finderサービスの直下表示設定](docs/FINDER_SERVICE_MENU.md)を参照してください。
+
+
+## Folio Editorで開く
+
+Finderの「Folio Editorで開く」は、通常のフォルダーまたはMarkdownファイル（`.md` / `.markdown`）を1つ選択して実行します。フォルダーはエクスプローラーに表示し、MarkdownはFolio Editorの文書として開きます。ファイル名の日本語・空白・記号はURLのまま受け渡します。
+
+従来の実装はフォルダー専用で、Markdownを渡すと拒否していました。ファイルはmacOSの通常の文書起動経路、フォルダーは`folio-editor://folder`で開きます。サービスの対象型にもMarkdownを追加しています。
+
+受け渡し先の回帰テストは次で実行できます。
+
+```sh
+xcrun swiftc App/FolderService.swift Shared/FolderOpening.swift Tests/FolioOpening/main.swift -o /tmp/folio-opening-test
+/tmp/folio-opening-test
+```

@@ -10,7 +10,7 @@
 			<key>NSMenuItem</key>
 			<dict>
 				<key>default</key>
-				<string>Finder Open WithでVS Codeを開く</string>
+				<string>VS Codeで開く</string>
 			</dict>
 			<key>NSMessage</key>
 			<string>openInVSCode</string>
@@ -30,6 +30,68 @@
 				<key>NSApplicationIdentifier</key>
 				<string>com.apple.finder</string>
 			</dict>
+		</dict>
+		<dict>
+			<key>NSMenuItem</key>
+			<dict>
+				<key>default</key>
+				<string>Obsidianで開く</string>
+			</dict>
+			<key>NSMessage</key>
+			<string>openInObsidian</string>
+			<key>NSPortName</key>
+			<string>Finder Open With</string>
+			<key>NSSendTypes</key>
+			<array>
+				<string>public.file-url</string>
+				<string>NSFilenamesPboardType</string>
+			</array>
+			<key>NSSendFileTypes</key>
+			<array>
+				<string>public.folder</string>
+			</array>
+			<key>NSRequiredContext</key>
+			<dict>
+				<key>NSApplicationIdentifier</key>
+				<string>com.apple.finder</string>
+			</dict>
+		</dict>
+		<dict>
+			<key>NSMenuItem</key>
+			<dict>
+				<key>default</key>
+				<string>Folio Editorで開く</string>
+			</dict>
+			<key>NSMessage</key>
+			<string>openInFolioEditor</string>
+			<key>NSPortName</key>
+			<string>Finder Open With</string>
+			<key>NSSendTypes</key>
+			<array>
+				<string>public.file-url</string>
+				<string>NSFilenamesPboardType</string>
+			</array>
+			<key>NSSendFileTypes</key>
+			<array>
+				<string>public.folder</string>
+				<string>net.daringfireball.markdown</string>
+			</array>
+			<key>NSRequiredContext</key>
+			<dict>
+				<key>NSApplicationIdentifier</key>
+				<string>com.apple.finder</string>
+			</dict>
+		</dict>
+	</array>
+	<key>CFBundleURLTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleURLName</key>
+			<string>jp.miyazawahayato.FolderLauncher</string>
+			<key>CFBundleURLSchemes</key>
+			<array>
+				<string>finder-open-with</string>
+			</array>
 		</dict>
 	</array>
 </dict>

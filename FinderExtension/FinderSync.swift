@@ -21,24 +21,9 @@ final class FinderSync: FIFinderSync {
         logger.notice("Registered home scope: \(home.path, privacy: .public)")
     }
 
+    // Folder actions are provided by macOS Services in both local and cloud folders.
+    // Keep the extension identity for existing installations, without duplicate items.
     override func menu(for menuKind: FIMenuKind) -> NSMenu? {
-        guard menuKind == .contextualMenuForItems else { return nil }
-        let urls = FIFinderSyncController.default().selectedItemURLs() ?? []
-        guard !urls.isEmpty, urls.allSatisfy(FolderOpening.isFolder) else { return nil }
-        let menu = NSMenu(title: "")
-        let item = NSMenuItem(title: "VS Codeで開く", action: #selector(openInVSCode(_:)), keyEquivalent: "")
-        item.target = self
-        menu.addItem(item)
-        return menu
-    }
-
-    @objc private func openInVSCode(_ sender: NSMenuItem) {
-        let urls = FIFinderSyncController.default().selectedItemURLs() ?? []
-        do {
-            try FolderOpening.openInVSCode(urls)
-        } catch {
-            logger.error("Opening folders failed: \(error.localizedDescription, privacy: .public)")
-            NSSound.beep()
-        }
+        nil
     }
 }
